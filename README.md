@@ -1,6 +1,8 @@
 VERSION 1.0 IS HERE
 
 https://gifyu.com/image/SozmF
+![Screenshot 2024-08-20 181416](https://github.com/user-attachments/assets/058a60b9-381e-4d7e-b8c8-250aeb742735)
+
 
 Are you tired of not having the ability to change settings in your own matches?
 
@@ -22,6 +24,16 @@ Half-Time
 Free Armor
 
 And MORE.
+
+
+For Support =
+
+VincentBusinessMail@web.de | Email
+
+https://discord.gg/Ft3PXfHXBG | Discord
+
+Dr Duggi | Steam
+
 
 .
 
