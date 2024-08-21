@@ -1,9 +1,53 @@
-[gd_scene load_steps=5 format=3 uid="uid://8urvmtslwic"]
+[gd_scene load_steps=15 format=3 uid="uid://8urvmtslwic"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_ibw8p"]
+[ext_resource type="Texture2D" uid="uid://dn842onr6dy40" path="res://Ressource/De_vertigo_cs2.webp" id="2_8t6wl"]
 [ext_resource type="Texture2D" uid="uid://c3ek5wgo7drx0" path="res://Ressource/600px-Counter-Strike_2_gamelogo_lightmode.png" id="2_80vvx"]
 [ext_resource type="AudioStream" uid="uid://okcmtxw1u6oi" path="res://Ressource/01 Dolls Antique.mp3" id="3_66may"]
 [ext_resource type="FontFile" uid="uid://bul1ss1jhisgn" path="res://Ressource/Montserrat-VariableFont_wght.ttf" id="4_2wmfm"]
+[ext_resource type="AudioStream" uid="uid://bhmui16l1ubvg" path="res://Ressource/ak47_boltpull.wav" id="6_jp0bn"]
+[ext_resource type="AudioStream" uid="uid://npel3ivjavwa" path="res://Ressource/moneycounter.wav" id="7_2im31"]
+[ext_resource type="Script" path="res://discord.gd" id="8_ubmbl"]
+[ext_resource type="Texture2D" uid="uid://d2rg0q78wwh0s" path="res://Ressource/discord.png" id="9_1f7ti"]
+[ext_resource type="AudioStream" uid="uid://cagw2xq2khpon" path="res://Ressource/buzzer.mp3" id="10_3gga2"]
+[ext_resource type="Script" path="res://help.gd" id="10_4j0bv"]
+
+[sub_resource type="Animation" id="Animation_csc1d"]
+resource_name = "Copied"
+length = 3.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 3, 3.76667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-162, 6), Vector2(0, 6), Vector2(0, 6), Vector2(-29, -130)]
+}
+
+[sub_resource type="Animation" id="Animation_2rr8d"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-162, 6)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8gpn3"]
+_data = {
+"Copied": SubResource("Animation_csc1d"),
+"RESET": SubResource("Animation_2rr8d")
+}
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -13,6 +57,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ibw8p")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.552956, 0.552956, 0.552956, 1)
+position = Vector2(578, 255)
+scale = Vector2(1.01167, 1.0163)
+texture = ExtResource("2_8t6wl")
 
 [node name="Export" type="Button" parent="."]
 layout_mode = 1
@@ -55,15 +107,45 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -304.0
+offset_top = 26.0
 offset_right = 304.0
-offset_bottom = 131.0
+offset_bottom = 157.0
 grow_horizontal = 2
+theme_override_colors/icon_hover_color = Color(0.864675, 0.864675, 0.864675, 0.913725)
 icon = ExtResource("2_80vvx")
 flat = true
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_66may")
 volume_db = -20.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("ColorRect")
+libraries = {
+"": SubResource("AnimationLibrary_8gpn3")
+}
+
+[node name="ColorRect" type="ColorRect" parent="AnimationPlayer"]
+offset_left = -162.0
+offset_top = 6.0
+offset_right = -30.0
+offset_bottom = 46.0
+color = Color(0.356863, 0.360784, 0.72549, 0.607843)
+
+[node name="Label14" type="Label" parent="AnimationPlayer/ColorRect"]
+layout_mode = 1
+offset_top = -5.0
+offset_right = 150.0
+offset_bottom = 44.0
+theme_override_colors/font_color = Color(1, 1, 1, 0.784314)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 0.784314)
+theme_override_fonts/font = ExtResource("4_2wmfm")
+theme_override_font_sizes/font_size = 16
+text = "Command has
+been copied
+"
+vertical_alignment = 1
+uppercase = true
 
 [node name="TextEdit" type="TextEdit" parent="."]
 layout_mode = 1
@@ -78,7 +160,7 @@ offset_right = 500.0
 offset_bottom = -49.0
 grow_horizontal = 2
 grow_vertical = 2
-placeholder_text = "Please export."
+placeholder_text = "awaiting Export.."
 editable = false
 drag_and_drop_selection_enabled = false
 
@@ -140,6 +222,7 @@ offset_right = 646.0
 offset_bottom = 477.0
 item_count = 5
 popup/item_0/text = "30s (Rush)"
+popup/item_0/disabled = true
 popup/item_1/text = "1m  (Hurry)"
 popup/item_1/id = 1
 popup/item_2/text = "2m (Default)"
@@ -149,21 +232,48 @@ popup/item_3/id = 3
 popup/item_4/text = "5m (Relaxed)"
 popup/item_4/id = 4
 
-[node name="RoundTime2" type="OptionButton" parent="."]
+[node name="Bot-Count" type="OptionButton" parent="."]
 layout_mode = 0
 offset_left = 650.0
 offset_top = 446.0
 offset_right = 831.0
 offset_bottom = 477.0
-item_count = 5
-popup/item_0/text = "30s (Rush)"
-popup/item_1/text = "1m  (Hurry)"
+item_count = 10
+popup/item_0/text = "1 Bot"
+popup/item_1/text = "2 Bots"
 popup/item_1/id = 1
-popup/item_2/text = "2m (Default)"
+popup/item_2/text = "3 Bot"
 popup/item_2/id = 2
-popup/item_3/text = "3m (Calm)"
+popup/item_3/text = "4 Bots"
 popup/item_3/id = 3
-popup/item_4/text = "5m (Relaxed)"
+popup/item_4/text = "5 Bots"
+popup/item_4/id = 4
+popup/item_5/text = "6 Bots"
+popup/item_5/id = 5
+popup/item_6/text = "7 Bots"
+popup/item_6/id = 6
+popup/item_7/text = "8 Bots"
+popup/item_7/id = 7
+popup/item_8/text = "9 Bots"
+popup/item_8/id = 8
+popup/item_9/text = "10 Bots"
+popup/item_9/id = 9
+
+[node name="Player-Count" type="OptionButton" parent="."]
+layout_mode = 0
+offset_left = 835.0
+offset_top = 446.0
+offset_right = 1016.0
+offset_bottom = 477.0
+item_count = 5
+popup/item_0/text = "1 Player"
+popup/item_1/text = "2 Player"
+popup/item_1/id = 1
+popup/item_2/text = "3 Player"
+popup/item_2/id = 2
+popup/item_3/text = "4 Player"
+popup/item_3/id = 3
+popup/item_4/text = "5 Player"
 popup/item_4/id = 4
 
 [node name="Difficulty" type="OptionButton" parent="."]
@@ -265,9 +375,9 @@ popup/item_6/id = 6
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
 offset_left = 719.0
-offset_top = 128.0
+offset_top = 155.0
 offset_right = 835.0
-offset_bottom = 144.0
+offset_bottom = 171.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -277,45 +387,47 @@ text = "Click to disable music"
 
 [node name="Halftime" type="CheckButton" parent="."]
 layout_mode = 0
-offset_left = 210.0
+offset_left = 214.0
 offset_top = 500.0
-offset_right = 325.0
+offset_right = 337.0
 offset_bottom = 531.0
 button_pressed = true
-text = "Halftime"
+text = "Half-Time"
 
 [node name="FreeArmor" type="CheckButton" parent="."]
 layout_mode = 0
-offset_left = 327.0
+offset_left = 338.0
 offset_top = 500.0
-offset_right = 463.0
+offset_right = 474.0
 offset_bottom = 531.0
 text = "Free Armor"
 
 [node name="BotMimic" type="CheckButton" parent="."]
 layout_mode = 0
-offset_left = 466.0
+offset_left = 478.0
 offset_top = 500.0
-offset_right = 602.0
+offset_right = 614.0
 offset_bottom = 531.0
+disabled = true
 text = "Bot_Mimic"
 
 [node name="Everyone_Enemy" type="CheckButton" parent="."]
 layout_mode = 0
-offset_left = 604.0
+offset_left = 621.0
 offset_top = 500.0
-offset_right = 740.0
+offset_right = 800.0
 offset_bottom = 531.0
+disabled = true
 text = "Everyone_Enemy"
 
 [node name="Overtime" type="CheckButton" parent="."]
 layout_mode = 0
-offset_left = 90.0
+offset_left = 86.0
 offset_top = 500.0
-offset_right = 211.0
+offset_right = 215.0
 offset_bottom = 531.0
 button_pressed = true
-text = "Overtime"
+text = "Over-Time"
 
 [node name="Label2" type="Label" parent="."]
 layout_mode = 0
@@ -371,6 +483,17 @@ theme_override_colors/font_color = Color(0.277528, 0.277528, 0.277528, 1)
 theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("4_2wmfm")
 text = "Bot-Count"
+
+[node name="Label13" type="Label" parent="."]
+layout_mode = 0
+offset_left = 869.0
+offset_top = 419.0
+offset_right = 981.0
+offset_bottom = 442.0
+theme_override_colors/font_color = Color(0.277528, 0.277528, 0.277528, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_2wmfm")
+text = "Player-Count"
 
 [node name="Label3" type="Label" parent="."]
 layout_mode = 0
@@ -448,13 +571,53 @@ theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("4_2wmfm")
 text = "Version 1.0"
 
+[node name="AudioStreamPlayer2D2" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(604, 500)
+stream = ExtResource("6_jp0bn")
+
+[node name="AudioStreamPlayer2D3" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_2im31")
+
+[node name="Discord" type="Button" parent="."]
+layout_mode = 0
+offset_left = 912.0
+offset_top = 603.0
+offset_right = 1098.0
+offset_bottom = 824.0
+scale = Vector2(0.2, 0.2)
+flat = true
+script = ExtResource("8_ubmbl")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Discord"]
+position = Vector2(91.1875, 111.278)
+scale = Vector2(0.637357, 0.637357)
+texture = ExtResource("9_1f7ti")
+
+[node name="Help" type="Button" parent="."]
+layout_mode = 0
+offset_left = 843.0
+offset_top = 609.0
+offset_right = 1128.0
+offset_bottom = 754.0
+scale = Vector2(0.2, 0.2)
+theme_override_font_sizes/font_size = 100
+text = "HELP"
+script = ExtResource("10_4j0bv")
+
+[node name="AudioStreamPlayer2D4" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_3gga2")
+volume_db = -20.392
+
 [connection signal="pressed" from="Export" to="." method="_on_export_pressed"]
 [connection signal="pressed" from="Close" to="." method="_on_close_pressed"]
 [connection signal="pressed" from="Sound" to="." method="_on_sound_pressed"]
 [connection signal="item_selected" from="Team" to="." method="_on_team_item_selected"]
+[connection signal="pressed" from="Team" to="." method="_on_team_pressed"]
 [connection signal="item_selected" from="MaxRounds" to="." method="_on_max_rounds_item_selected"]
 [connection signal="item_selected" from="GrenadeLimit" to="." method="_on_grenade_limit_item_selected"]
 [connection signal="item_selected" from="RoundTime" to="." method="_on_round_time_item_selected"]
+[connection signal="item_selected" from="Bot-Count" to="." method="_on_bot_count_item_selected"]
+[connection signal="item_selected" from="Player-Count" to="." method="_on_player_count_item_selected"]
 [connection signal="item_selected" from="Difficulty" to="." method="_on_difficulty_item_selected"]
 [connection signal="item_selected" from="StartMoney" to="." method="_on_start_money_item_selected"]
 [connection signal="item_selected" from="MaxMoney" to="." method="_on_max_money_item_selected"]
@@ -462,3 +625,5 @@ text = "Version 1.0"
 [connection signal="toggled" from="Halftime" to="." method="_on_halftime_toggled"]
 [connection signal="toggled" from="FreeArmor" to="." method="_on_free_armor_toggled"]
 [connection signal="toggled" from="Overtime" to="." method="_on_overtime_toggled"]
+[connection signal="pressed" from="Discord" to="Discord" method="_on_pressed"]
+[connection signal="pressed" from="Help" to="Help" method="_on_pressed"]
